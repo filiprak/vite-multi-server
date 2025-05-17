@@ -37,14 +37,10 @@ export default defineConfig({
             },
             transform (code, id) {
                 if (id.endsWith('.css')) {
-                    console.log(id)
-
                     code = [
                         `import { __updateShadowDomStyle as __vite__updateStyle, __removeShadowDomStyle as __vite__removeStyle } from 'virtual:shadow-dom'`,
                         ...code.split('\n').slice(1)
                     ].join('\n');
-
-                    console.log(code)
 
                     return {
                         code,

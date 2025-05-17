@@ -25,7 +25,6 @@ export function useShadowDom() {
 
     onMounted(() => {
         const shadow_root = extractShadowRoot();
-        const styles: HTMLStyleElement[] = [];
 
         document.addEventListener('update-style', onStyleUpdated);
         document.addEventListener('remove-style', onStyleRemoved);
