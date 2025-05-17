@@ -1,11 +1,11 @@
 <template>
     <div class="app1">
-        my app 1
+        my app 2
     </div>
 </template>
 <script setup lang="ts">
-import styles from './styles.css?inline';
+import './styles.css';
+import { useShadowDom } from './shadow';
 
-console.log(styles)
-
+useShadowDom();
 </script>
