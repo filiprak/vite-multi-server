@@ -16,7 +16,7 @@ async function createServer () {
     const vite1 = await createViteServer({
         ...config1,
         root: '../app1/',
-        base: '/',
+        base: '/app1/',
         server: {
             middlewareMode: { server },
             hmr: {
@@ -28,7 +28,7 @@ async function createServer () {
     const vite2 = await createViteServer({
         ...config2,
         root: '../app2/',
-        base: '/',
+        base: '/app2/',
         server: {
             middlewareMode: { server },
             hmr: {

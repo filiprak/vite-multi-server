@@ -1,3 +1,4 @@
-const x: number = 1;
+import { defineCustomElement } from 'vue';
+import MyApp1 from './MyApp1.vue';
 
-console.log('app1')
+customElements.define('my-app-1', defineCustomElement(MyApp1));
