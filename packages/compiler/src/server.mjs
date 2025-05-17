@@ -1,33 +1,32 @@
-import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import express from 'express'
 import { createServer as createViteServer } from 'vite'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const root = path.resolve(fileURLToPath(import.meta.url), '../../../..');
 
 async function createServer () {
     const app = express()
 
-    // Create Vite server in middleware mode and configure the app type as
-    // 'custom', disabling Vite's own HTML serving logic so parent server
-    // can take control
-    const vite = await createViteServer({
-        server: { middlewareMode: true },
+    const vite1 = await createViteServer({
+        root: '../app1/',
+        base: '/',
+        server: app,
+        appType: 'custom'
+    })
+    const vite2 = await createViteServer({
+        root: '../app2/',
+        base: '/',
+        server: app,
         appType: 'custom'
     })
 
-    // Use vite's connect instance as middleware. If you use your own
-    // express router (express.Router()), you should use router.use
-    // When the server restarts (for example after the user modifies
-    // vite.config.js), `vite.middlewares` is still going to be the same
-    // reference (with a new internal stack of Vite and plugin-injected
-    // middlewares). The following is valid even after restarts.
-    app.use(vite.middlewares)
+    app.use('/app1', vite1.middlewares)
+    app.use('/app2', vite2.middlewares)
 
-    // app.use('*all', async (req, res) => {
-    //     // serve index.html - we will tackle this next
-    // })
+    app.get('/', (req, res) => {
+        res.sendFile(path.resolve(root, 'index.html'));
+    });
 
     const PORT = 5173;
 
