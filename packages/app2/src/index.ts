@@ -1,1 +1,1 @@
-console.log('app2')
+document.body.className = 'app2';
