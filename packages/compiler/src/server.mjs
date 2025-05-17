@@ -1,4 +1,5 @@
 import path from 'node:path'
+import http from 'node:http'
 import { fileURLToPath } from 'node:url'
 import express from 'express'
 import { createServer as createViteServer } from 'vite'
@@ -7,17 +8,28 @@ const root = path.resolve(fileURLToPath(import.meta.url), '../../../..');
 
 async function createServer () {
     const app = express()
+    const server = http.createServer(app);
 
     const vite1 = await createViteServer({
         root: '../app1/',
         base: '/',
-        server: app,
+        server: {
+            middlewareMode: { server },
+            hmr: {
+                port: 8081
+            },
+        },
         appType: 'custom'
     })
     const vite2 = await createViteServer({
         root: '../app2/',
         base: '/',
-        server: app,
+        server: {
+            middlewareMode: { server },
+            hmr: {
+                port: 8082
+            },
+        },
         appType: 'custom'
     })
 
@@ -30,7 +42,7 @@ async function createServer () {
 
     const PORT = 5173;
 
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
         console.log(`Server started on http://localhost:${PORT}`)
     })
 }

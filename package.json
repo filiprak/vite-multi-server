@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm run dev -w packages/compiler"
+    "dev": "npm run dev -w packages/compiler",
+    "dev:app1": "npm run dev -w packages/app1"
   },
   "author": "",
   "license": "ISC",
