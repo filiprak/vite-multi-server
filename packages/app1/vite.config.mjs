@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     build: {
-        minify: false,
+        minify: true,
         manifest: 'manifest.json',
         cssCodeSplit: true,
         rollupOptions: {
@@ -16,27 +16,26 @@ export default defineConfig({
             name: 'shadow-dom:module',
             enforce: 'pre',
 
-            generateBundle (_, bundle) {
-                for (const file of Object.values(bundle)) {
-                    let code = file.code || '';
-                    let hasPreload = code.indexOf('__vitePreload') >= 0;
+            renderChunk (code, chunk) {
+                let hasPreload = code.indexOf('__vitePreload') >= 0;
 
-                    if (hasPreload) {
-                        // Match __vitePreload function and its body
-                        code = code.replace(
-                            /__vitePreload[\s\S]*?(document\.head\.appendChild\s*\(\s*link\s*\))/g,
-                            (fullMatch) => {
-                                const modifiedBody = fullMatch.replace(
-                                    /document\.head\.appendChild\(\s*link\s*\)/g,
-                                    'isCss && window.__injectShadowStyle ? window.__injectShadowStyle(link) : document.head.appendChild(link)'
-                                );
-                                return modifiedBody;
-                            }
-                        );
-                    }
-
-                    file.code = code;
+                if (hasPreload) {
+                    // Match __vitePreload function and its body
+                    code = code.replace(
+                        /__vitePreload[\s\S]*?(document\.head\.appendChild\s*\(\s*link\s*\))/g,
+                        (fullMatch) => {
+                            const modifiedBody = fullMatch.replace(
+                                /document\.head\.appendChild\(\s*link\s*\)/g,
+                                'isCss && window.__injectShadowStyle ? window.__injectShadowStyle(link) : document.head.appendChild(link)'
+                            );
+                            return modifiedBody;
+                        }
+                    );
                 }
+                return {
+                    code,
+                    map: null,
+                };
             },
 
             resolveId (id) {
