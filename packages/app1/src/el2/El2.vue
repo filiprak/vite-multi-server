@@ -1,6 +1,6 @@
 <template>
     <div class="el-2">
-        <div>This is el 2</div>
+        <div>This is el 2 <input></div>
     </div>
 </template>
 <script setup lang="ts">

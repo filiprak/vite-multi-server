@@ -5,7 +5,7 @@
 </script>
 <style scoped>
 button {
-    background-color: rgb(71, 71, 141);
+    background-color: rgb(174, 32, 127);
     color: white;
     border: none;
     padding: 15px;
