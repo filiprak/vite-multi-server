@@ -1,1 +1,3 @@
-document.body.className = 'app2';
+import { modal } from './utils';
+
+modal();
