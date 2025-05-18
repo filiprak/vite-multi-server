@@ -14,6 +14,13 @@ export function useShadowDom() {
             const el = shadow.getElementById(evt.detail.id);
             if (el) {
                 el.innerHTML = evt.detail.css || '';
+            } else {
+                const style = document.createElement('style');
+
+                style.id = evt.detail.id;
+                style.innerHTML = evt.detail.css as string;
+
+                shadow.prepend(style);
             }
         });
     }
