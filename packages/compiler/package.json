@@ -6,6 +6,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node ./src/server.mjs"
   },
+  "exports": {
+    "./*": "./src/*.mjs"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
