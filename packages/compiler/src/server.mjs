@@ -51,7 +51,7 @@ async function createServer () {
     const PORT = 5173;
 
     server.listen(PORT, () => {
-        console.log(chalk.bold.green(`  VITE v${version} Multi-Dev Server`))
+        console.log(chalk.bold.green(`  VITE v${version} Monorepo-Dev Server`))
         console.log('')
         console.log(chalk.bold.white('  ➜  Local:    ') + chalk.cyan(`http://localhost:${PORT}/`))
         console.log('')
