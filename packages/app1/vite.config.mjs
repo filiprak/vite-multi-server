@@ -1,12 +1,34 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 
 export default defineConfig({
+    build: {
+        manifest: 'manifest.json',
+        cssCodeSplit: true,
+        rollupOptions: {
+            // input: './src/index.ts',
+        },
+    },
     plugins: [
         vue(),
+        cssInjectedByJsPlugin({
+            injectCode: (css, options) => {
+                return `
+                    window.__styles = window.__styles || {};
+                    const styles = window.__styles;
+                    const id = ${Math.floor(Math.random() * 100000)};
+                    const css = ${css};
+
+                    styles[id] = css;
+                    document.dispatchEvent(new CustomEvent('update-style', { detail: { id, css } }));
+                `;
+            },
+        }),
         {
-            name: 'custom-css-inject',
-            enforce: 'post',
+            name: 'shadow-dom:module',
+            enforce: 'pre',
+
             resolveId (id) {
                 if (id === 'virtual:shadow-dom') {
                     return '\0virtual:shadow-dom';
@@ -15,11 +37,8 @@ export default defineConfig({
             load (id) {
                 if (id === '\0virtual:shadow-dom') {
                     return `
-                        const styles = {};
-                        const update_cb = [];
-                        const remove_cb = [];
-                        export const onStyleUpdated = (cb) => cb();
-                        export const onStyleRemoved = (cb) => cb();
+                        window.__styles = window.__styles || {};
+                        const styles = window.__styles;
 
                         export const __updateShadowDomStyle = (id, css) => {
                             styles[id] = css;
@@ -35,6 +54,11 @@ export default defineConfig({
                     `;
                 }
             },
+        },
+        {
+            name: 'shadow-dom',
+            enforce: 'post',
+
             transform (code, id) {
                 if (id.endsWith('.css')) {
                     code = [

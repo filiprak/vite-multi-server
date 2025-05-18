@@ -36,7 +36,6 @@ export function useShadowDom() {
                 const style = document.createElement('style');
 
                 style.id = id;
-                style.dataset.id = id;
                 style.innerHTML = css as string;
 
                 el = style;
