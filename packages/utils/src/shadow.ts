@@ -12,18 +12,36 @@ export function useShadowDom() {
         return getCurrentInstance()?.proxy?.$el.parentNode as ShadowRoot;
     }
 
+    function appendLink(shadow: ShadowRoot, link: HTMLLinkElement) {
+        const nodes = shadow.querySelectorAll('link');
+        const new_link = link.cloneNode(true) as HTMLLinkElement;
+
+        new_link.onload = link.onload;
+        new_link.onerror = link.onerror;
+
+        if (nodes.length > 0) {
+            nodes[nodes.length - 1].parentNode?.insertBefore(new_link, nodes[nodes.length - 1].nextSibling);
+        } else {
+            shadow.prepend(new_link);
+        }
+    }
+
     function onStyleUpdated(evt: CustomEvent) {
         shadow_doms.value.forEach(shadow => {
-            const el = shadow.getElementById(evt.detail.id);
-            if (el) {
-                el.innerHTML = evt.detail.css || '';
+            if (evt.detail.link) {
+                appendLink(shadow, evt.detail.link);
             } else {
-                const style = document.createElement('style');
+                const el = shadow.getElementById(evt.detail.id);
+                if (el) {
+                    el.innerHTML = evt.detail.css || '';
+                } else {
+                    const style = document.createElement('style');
 
-                style.id = evt.detail.id;
-                style.innerHTML = evt.detail.css as string;
+                    style.id = evt.detail.id;
+                    style.innerHTML = evt.detail.css as string;
 
-                shadow.prepend(style);
+                    shadow.prepend(style);
+                }
             }
         });
     }
@@ -40,19 +58,22 @@ export function useShadowDom() {
         document.addEventListener('remove-style', onStyleRemoved);
 
         for (const [id, css] of Object.entries(getStyles())) {
-            let el = shadow_root.getElementById(id);
+            if (typeof css === 'string') {
+                let el = shadow_root.getElementById(id);
 
-            if (!el) {
-                const style = document.createElement('style');
+                if (!el) {
+                    const style = document.createElement('style');
 
-                style.id = id;
-                style.innerHTML = css as string;
+                    style.id = id;
+                    style.innerHTML = css as string;
 
-                el = style;
+                    el = style;
+                }
+
+                shadow_root.prepend(el);
+            } else {
+                appendLink(shadow_root, css as HTMLLinkElement);
             }
-
-            shadow_root.prepend(el);
-
         }
 
         shadow_doms.value.push(shadow_root);
