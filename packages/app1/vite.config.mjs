@@ -12,19 +12,19 @@ export default defineConfig({
     },
     plugins: [
         vue(),
-        cssInjectedByJsPlugin({
-            injectCode: (css, options) => {
-                return `
-                    window.__styles = window.__styles || {};
-                    const styles = window.__styles;
-                    const id = ${Math.floor(Math.random() * 100000)};
-                    const css = ${css};
+        // cssInjectedByJsPlugin({
+        //     injectCode: (css, options) => {
+        //         return `
+        //             window.__styles = window.__styles || {};
+        //             const styles = window.__styles;
+        //             const id = ${Math.floor(Math.random() * 100000)};
+        //             const css = ${css};
 
-                    styles[id] = css;
-                    document.dispatchEvent(new CustomEvent('update-style', { detail: { id, css } }));
-                `;
-            },
-        }),
+        //             styles[id] = css;
+        //             document.dispatchEvent(new CustomEvent('update-style', { detail: { id, css } }));
+        //         `;
+        //     },
+        // }),
         {
             name: 'shadow-dom:module',
             enforce: 'pre',
