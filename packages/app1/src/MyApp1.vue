@@ -8,7 +8,7 @@
 </template>
 <script setup lang="ts">
 import './styles.css';
-import { useShadowDom } from './shadow';
+import { useShadowDom } from '@repo/utils';
 import { defineAsyncComponent } from 'vue';
 
 const X = defineAsyncComponent({
