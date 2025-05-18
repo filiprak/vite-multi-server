@@ -1,3 +1,3 @@
-import { modal } from './utils';
+import { randId } from '@repo/utils';
 
-modal();
+console.log('app2', randId())
