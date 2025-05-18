@@ -50,8 +50,10 @@ export default defineConfig({
                         window.__styles = window.__styles || {};
                         const styles = window.__styles;
 
+                        const static_links = document.querySelectorAll('link[rel=shadow-dom]');
+                        for (const link of static_links) { styles[link.href] = link; link.remove();  }
+
                         window.__injectShadowStyle = (link) => {
-                            document.head.appendChild(link);
                             styles[link.href] = link;
                             document.dispatchEvent(new CustomEvent('update-style', { detail: { link } }));
                         }
@@ -87,7 +89,15 @@ export default defineConfig({
                         map: null,
                     };
                 }
-            }
+            },
+
+            transformIndexHtml (html) {
+                return html.replace(
+                    /<link\s+([^>]*?)rel=["']stylesheet["']([^>]*?)>/gi,
+                    (_match, beforeRel, afterRel) =>
+                        `<link ${beforeRel}rel="shadow-dom"${afterRel}>`
+                );
+            },
         },
     ],
 });

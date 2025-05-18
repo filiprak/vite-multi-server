@@ -16,8 +16,9 @@ export function useShadowDom() {
         const nodes = shadow.querySelectorAll('link');
         const new_link = link.cloneNode(true) as HTMLLinkElement;
 
-        new_link.onload = link.onload;
-        new_link.onerror = link.onerror;
+        new_link.addEventListener('load', e => link.dispatchEvent(new Event('load')))
+        new_link.addEventListener('error', e => link.dispatchEvent(new Event('error')))
+        new_link.rel = 'stylesheet';
 
         if (nodes.length > 0) {
             nodes[nodes.length - 1].parentNode?.insertBefore(new_link, nodes[nodes.length - 1].nextSibling);
