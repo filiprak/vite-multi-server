@@ -1,6 +1,9 @@
 {
   "name": "@repo/app1",
   "version": "1.0.0",
+  "devServer": {
+    "serve": true
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

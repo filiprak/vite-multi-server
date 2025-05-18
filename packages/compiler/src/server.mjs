@@ -4,6 +4,7 @@ import chalk from 'chalk'
 import { fileURLToPath } from 'node:url'
 import express from 'express'
 import { createServer as createViteServer, loadConfigFromFile, version } from 'vite'
+import { findPackagesWithDevServer } from './utils.mjs'
 
 const root = path.resolve(fileURLToPath(import.meta.url), '../../../..');
 
@@ -11,36 +12,37 @@ async function createServer () {
     const app = express()
     const server = http.createServer(app);
 
-    const config1 = await loadConfigFromFile({ command: 'serve' }, path.resolve('../app1/vite.config.mjs'));
-    const config2 = await loadConfigFromFile({ command: 'serve' }, path.resolve('../app2/vite.config.mjs'));
+    const packages = await findPackagesWithDevServer(root);
+    const configs = {};
+    let HMR_BASE_PORT = 8080;
 
-    const vite1 = await createViteServer({
-        ...config1,
-        root: '../app1/',
-        base: '/app1/',
-        server: {
-            middlewareMode: { server },
-            hmr: {
-                port: 8081
-            },
-        },
-        appType: 'custom'
-    })
-    const vite2 = await createViteServer({
-        ...config2,
-        root: '../app2/',
-        base: '/app2/',
-        server: {
-            middlewareMode: { server },
-            hmr: {
-                port: 8082
-            },
-        },
-        appType: 'custom'
-    })
+    await Promise.all(
+        Object
+            .entries(packages)
+            .map(async ([name, { dir }]) => {
+                configs[name] = await loadConfigFromFile({ command: 'serve' }, path.resolve(dir, 'vite.config.mjs'));
+            })
+    );
 
-    app.use('/app1', vite1.middlewares)
-    app.use('/app2', vite2.middlewares)
+    await Promise.all(
+        Object
+            .entries(packages)
+            .map(async ([name, { dir }]) => {
+                const vite = await createViteServer({
+                    ...configs[name],
+                    root: dir,
+                    base: `/${name}/`,
+                    server: {
+                        middlewareMode: { server },
+                        hmr: {
+                            port: HMR_BASE_PORT++
+                        },
+                    },
+                    appType: 'custom'
+                });
+                app.use(`/${name}`, vite.middlewares);
+            })
+    );
 
     app.get('/', (req, res) => {
         res.sendFile(path.resolve(root, 'index.html'));
@@ -51,7 +53,16 @@ async function createServer () {
     server.listen(PORT, () => {
         console.log(chalk.bold.green(`  VITE v${version} Multi-Dev Server`))
         console.log('')
-        console.log(chalk.bold.white('  ➜  Local:    ') + chalk.cyan(`http://localhost:${PORT}`))
+        console.log(chalk.bold.white('  ➜  Local:    ') + chalk.cyan(`http://localhost:${PORT}/`))
+        console.log('')
+        console.log(chalk.bold.white(`  Serving ${Object.keys(packages).length} package(s):`))
+
+        Object
+            .entries(packages)
+            .map(async ([name, { dir }]) => {
+                console.log(chalk.dim(`  ➜  Package '${name}': `) + chalk.cyan(`http://localhost:${PORT}/${name}/`))
+            })
+
     })
 }
 
