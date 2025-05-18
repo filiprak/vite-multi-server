@@ -2,24 +2,30 @@
 <html lang="en">
 
 <head>
-    <script type="module"
-            src="/app1/@vite/client"></script>
-    <script type="module"
-            src="/app2/@vite/client"></script>
-    <meta charset="UTF-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0" />
-    <title>Vite Multi Server</title>
+        <script type="module"
+                src="/app1/@vite/client"></script>
+        <script type="module"
+                src="/app2/@vite/client"></script>
+        <meta charset="UTF-8" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0" />
+        <title>Vite Multi Server</title>
 </head>
 
 <body>
-    <h1>Hello, World!</h1>
-    <p>This is a simple HTML page served with Express.</p>
-    <my-app-1></my-app-1>
-    <script type="module"
-            src="/app1/src/index.ts"></script>
-    <script type="module"
-            src="/app2/src/index.ts"></script>
+        <h1>Hello, World!</h1>
+        <p>This is a simple HTML page served with Express.</p>
+
+        <el-1></el-1>
+        <el-2></el-2>
+        <hello-world></hello-world>
+
+        <script type="module"
+                src="/app1/src/el1/index.ts"></script>
+        <script type="module"
+                src="/app1/src/el2/index.ts"></script>
+        <script type="module"
+                src="/app2/src/index.ts"></script>
 </body>
 
 </html>

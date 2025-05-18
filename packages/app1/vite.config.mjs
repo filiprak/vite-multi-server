@@ -8,7 +8,10 @@ export default defineConfig({
         manifest: 'manifest.json',
         cssCodeSplit: true,
         rollupOptions: {
-            // input: './src/index.ts',
+            // input: [
+            //     './src/el1/index.ts',
+            //     './src/el2/index.ts',
+            // ],
         },
     },
     plugins: [
