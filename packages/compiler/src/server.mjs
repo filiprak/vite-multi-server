@@ -1,8 +1,9 @@
 import path from 'node:path'
 import http from 'node:http'
+import chalk from 'chalk'
 import { fileURLToPath } from 'node:url'
 import express from 'express'
-import { createServer as createViteServer, loadConfigFromFile } from 'vite'
+import { createServer as createViteServer, loadConfigFromFile, version } from 'vite'
 
 const root = path.resolve(fileURLToPath(import.meta.url), '../../../..');
 
@@ -48,7 +49,9 @@ async function createServer () {
     const PORT = 5173;
 
     server.listen(PORT, () => {
-        console.log(`Server started on http://localhost:${PORT}`)
+        console.log(chalk.bold.green(`  VITE v${version} Multi-Dev Server`))
+        console.log('')
+        console.log(chalk.bold.white('  ➜  Local:    ') + chalk.cyan(`http://localhost:${PORT}`))
     })
 }
 
