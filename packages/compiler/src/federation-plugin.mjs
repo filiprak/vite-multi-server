@@ -3,6 +3,7 @@ import { walk } from 'estree-walker';
 import MagicString from 'magic-string';
 import fs from 'fs';
 import path from 'path';
+import topLevelAwait from "vite-plugin-top-level-await";
 
 export default ({ exposes = {}, shared = {} } = {}) => {
     const virtualModuleId = 'virtual:federation';
@@ -146,5 +147,8 @@ export default ({ exposes = {}, shared = {} } = {}) => {
 
         }
     };
-    return plugin;
+    return [
+        topLevelAwait(),
+        plugin,
+    ];
 }

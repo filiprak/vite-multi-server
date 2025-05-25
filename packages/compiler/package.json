@@ -10,6 +10,7 @@
     "./*": "./src/*.mjs"
   },
   "dependencies": {
+    "vite-plugin-top-level-await": "^1.5.0",
     "estree-walker": "^3.0.3",
     "magic-string": "^0.30.17"
   },
