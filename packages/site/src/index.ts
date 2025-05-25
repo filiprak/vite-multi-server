@@ -1,7 +1,7 @@
 import { coreFunc } from '@repo/site/core';
-import { uiFunc } from '@repo/site/ui';
+import { init } from 'virtual:federation';
 
 coreFunc();
-uiFunc();
+init();
 
 console.log('./src/index.ts');
