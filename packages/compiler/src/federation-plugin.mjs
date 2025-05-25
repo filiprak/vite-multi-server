@@ -61,7 +61,7 @@ export default ({ exposes = {}, shared = {} } = {}) => {
                     if (node.type === 'ImportDeclaration') {
                         const moduleName = node.source.value
 
-                        if (shared[moduleName] && !shared[moduleName].eager) {
+                        if (shared[moduleName]) {
                             const namedImportDeclaration = []
                             let defaultImportDeclaration = null
 
