@@ -10,7 +10,7 @@
     "preview": "npm run build && vite preview"
   },
   "exports": {
-    "./*": "./src/shared/*"
+    "./*": "./src/shared/*/index.ts"
   },
   "keywords": [],
   "author": "",
