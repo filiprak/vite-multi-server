@@ -7,7 +7,8 @@
   "main": "index.js",
   "scripts": {
     "build": "vite build",
-    "preview": "npm run build && vite preview"
+    "build:remote": "set REMOTE=true && vite build",
+    "preview": "npm run build && npm run build:remote && vite preview"
   },
   "exports": {
     "./*": "./src/shared/*/index.ts"
