@@ -9,8 +9,8 @@ export default defineConfig((env) => {
     console.log('Is ssr', is_ssr)
 
     return {
-        ssr: is_ssr,
         build: {
+            ssr: is_ssr,
             minify: false,
             cssMinify: false,
             emptyOutDir: !is_remote,

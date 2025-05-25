@@ -9,13 +9,20 @@ export function getGlobal () {
     return globalThis.__federation__;
 }
 
+export async function loadAndRunEval (url) {
+    const res = await fetch(url);
+    const code = await res.text();
+
+    eval(code);
+}
+
 export function addRemote (options) {
     const f = getGlobal();
 
     const config = {
         ...options,
         load () {
-            return import(config.url);
+            return import.meta.env.SSR ? loadAndRunEval(config.url) : import(config.url);
         },
     };
     f.remotes[options.name] = config;
