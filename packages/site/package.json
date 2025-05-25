@@ -1,0 +1,23 @@
+{
+  "name": "@repo/site",
+  "version": "1.0.0",
+  "devServer": {
+    "serve": true
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "vite build",
+    "preview": "npm run build && vite preview"
+  },
+  "exports": {
+    "./*": "./src/shared/*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@repo/utils": "*",
+    "@repo/compiler": "*"
+  }
+}
