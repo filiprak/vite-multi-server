@@ -1,7 +1,5 @@
-import { init, addRemote, loadRemote } from 'virtual:federation';
+import { addRemote, loadRemote } from 'virtual:federation';
 import { coreFunc } from '@repo/site/core';
-
-init();
 
 coreFunc();
 addRemote({

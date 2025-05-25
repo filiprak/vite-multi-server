@@ -26,6 +26,7 @@ export default ({ exposes = {}, shared = {} } = {}) => {
 
                 let sharedMap = Object
                     .entries(shared)
+                    .filter(([_, config]) => !config.virtual)
                     .map(([name, config]) => {
                         return `'${name}': { ...${JSON.stringify(config)}, load: () => import('${name}') }`
                     })
@@ -61,7 +62,7 @@ export default ({ exposes = {}, shared = {} } = {}) => {
                     if (node.type === 'ImportDeclaration') {
                         const moduleName = node.source.value
 
-                        if (shared[moduleName]) {
+                        if (shared[moduleName] && !shared[moduleName].eager) {
                             const namedImportDeclaration = []
                             let defaultImportDeclaration = null
 

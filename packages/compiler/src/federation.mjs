@@ -1,20 +1,12 @@
-export function getSharedMap () {
-    return '[[_SHARED_MAP_]]';
-}
-
 export function getGlobal () {
     if (!globalThis.__federation__) {
-        globalThis.__federation__ = {};
+        globalThis.__federation__ = {
+            shared: '[[_SHARED_MAP_]]',
+            remotes: {},
+        };
     }
 
     return globalThis.__federation__;
-}
-
-export function init () {
-    const f = getGlobal();
-
-    f.shared = getSharedMap();
-    f.remotes = {};
 }
 
 export function addRemote (options) {
