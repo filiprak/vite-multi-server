@@ -9,6 +9,10 @@
   "exports": {
     "./*": "./src/*.mjs"
   },
+  "dependencies": {
+    "estree-walker": "^3.0.3",
+    "magic-string": "^0.30.17"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

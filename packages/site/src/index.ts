@@ -1,8 +1,9 @@
-import { coreFunc } from '@repo/site/core';
 import { init, addRemote, loadRemote } from 'virtual:federation';
+import { coreFunc } from '@repo/site/core';
+
+init();
 
 coreFunc();
-init();
 addRemote({
     name: 'app1',
     url: '/remote.js',

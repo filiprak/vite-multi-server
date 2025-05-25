@@ -18,12 +18,13 @@ export default defineConfig((env) => {
                     assetFileNames: is_remote ? `remote_[name]_[hash:6].[ext]` : `host_[hash:6].[ext]`,
                 },
             },
-            // target: 'node22',
+            target: 'esnext',
         },
         plugins: [
             federation({
                 shared: {
                     '@repo/site/core': {
+                        eager: !is_remote,
                         virtual: is_remote,
                     },
                     '@repo/site/ui': {

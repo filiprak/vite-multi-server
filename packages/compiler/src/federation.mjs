@@ -29,6 +29,18 @@ export function addRemote (options) {
     f.remotes[options.name] = config;
 }
 
+export async function loadShared (name) {
+    const f = getGlobal();
+
+    console.log(f)
+
+    return f.shared[name].load();
+}
+
+export async function importShared (name) {
+    return loadShared(name);
+}
+
 export async function loadRemote (name) {
     const f = getGlobal();
 
