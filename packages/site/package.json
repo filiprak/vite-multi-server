@@ -6,9 +6,11 @@
   },
   "main": "index.js",
   "scripts": {
-    "build": "vite build",
+    "build": "npm run build:host && npm run build:remote",
+    "build:host": "vite build",
     "build:remote": "set REMOTE=true && vite build",
-    "preview": "npm run build && npm run build:remote && vite preview"
+    "preview": "npm run build && vite preview",
+    "preview:ssr": "set SSR=true && npm run build && node ./dist/host.js"
   },
   "exports": {
     "./*": "./src/shared/*/index.ts"
